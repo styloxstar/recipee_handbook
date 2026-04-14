@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gym Recipe Book</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ease:cubic-bezier(0.4,0,0.2,1);--tt:0.45s}
+
+[data-theme="dark"]{
+--bg:#0c0c10;--bg2:#121218;--surface:rgba(255,255,255,0.04);--surface-h:rgba(255,255,255,0.07);
+--glass:rgba(255,255,255,0.06);--glass-b:rgba(255,255,255,0.08);--glass-s:rgba(255,255,255,0.1);
+--text:#f4f1ec;--text2:#9e9a93;--text3:#5c5955;
+--accent:#e8b931;--accent-g:rgba(232,185,49,0.15);--accent2:#ff6b4a;
+--soya:#5eead4;--paneer:#fdba74;--chicken:#fca5a5;--egg:#fde68a;--pizza:#c4b5fd;
+--veg:#86efac;--veg-bg:rgba(134,239,172,0.08);--nonveg:#fca5a5;--nonveg-bg:rgba(252,165,165,0.08);
+--shadow:0 8px 32px rgba(0,0,0,0.4);--shadow-lg:0 24px 80px rgba(0,0,0,0.5);
+--orb1:radial-gradient(circle at 20% 20%,rgba(232,185,49,0.08) 0%,transparent 50%);
+--orb2:radial-gradient(circle at 80% 80%,rgba(255,107,74,0.06) 0%,transparent 50%);
+--orb3:radial-gradient(circle at 50% 50%,rgba(94,234,212,0.04) 0%,transparent 40%);
+--input-bg:rgba(255,255,255,0.05);--badge:rgba(255,255,255,0.06);
+--modal-bg:rgba(18,18,24,0.92);--divider:rgba(255,255,255,0.06);
+--sb-track:rgba(255,255,255,0.02);--sb-thumb:rgba(255,255,255,0.08);
+}
+[data-theme="light"]{
+--bg:#f5f0e8;--bg2:#ece5d9;--surface:rgba(0,0,0,0.03);--surface-h:rgba(0,0,0,0.05);
+--glass:rgba(255,255,255,0.55);--glass-b:rgba(255,255,255,0.7);--glass-s:rgba(255,255,255,0.75);
+--text:#1a1714;--text2:#6b6560;--text3:#a39e97;
+--accent:#c4940a;--accent-g:rgba(196,148,10,0.12);--accent2:#e04a2b;
+--soya:#0d9488;--paneer:#c2680a;--chicken:#dc2626;--egg:#a16207;--pizza:#7c3aed;
+--veg:#16a34a;--veg-bg:rgba(22,163,74,0.08);--nonveg:#dc2626;--nonveg-bg:rgba(220,38,38,0.07);
+--shadow:0 8px 32px rgba(0,0,0,0.08);--shadow-lg:0 24px 80px rgba(0,0,0,0.1);
+--orb1:radial-gradient(circle at 20% 20%,rgba(196,148,10,0.1) 0%,transparent 50%);
+--orb2:radial-gradient(circle at 80% 80%,rgba(224,74,43,0.06) 0%,transparent 50%);
+--orb3:radial-gradient(circle at 50% 50%,rgba(13,148,136,0.06) 0%,transparent 40%);
+--input-bg:rgba(0,0,0,0.04);--badge:rgba(0,0,0,0.05);
+--modal-bg:rgba(245,240,232,0.92);--divider:rgba(0,0,0,0.06);
+--sb-track:rgba(0,0,0,0.03);--sb-thumb:rgba(0,0,0,0.1);
+}
+
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background var(--tt) var(--ease),color var(--tt) var(--ease)}
+body::before{content:'';position:fixed;inset:0;background:var(--orb1),var(--orb2),var(--orb3);pointer-events:none;z-index:0;transition:background 0.8s ease}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--sb-track)}::-webkit-scrollbar-thumb{background:var(--sb-thumb);border-radius:3px}
+
+/* Toggle */
+.toggle{position:fixed;top:20px;right:20px;z-index:100;width:56px;height:30px;border-radius:15px;background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-b);cursor:pointer;display:flex;align-items:center;padding:3px;transition:all .3s;box-shadow:var(--shadow)}
+.toggle:hover{border-color:var(--accent);box-shadow:0 0 20px var(--accent-g)}
+.toggle .knob{width:24px;height:24px;border-radius:12px;background:var(--accent);transition:transform .35s cubic-bezier(.68,-.3,.32,1.3);display:flex;align-items:center;justify-content:center;font-size:13px}
+[data-theme="dark"] .toggle .knob{transform:translateX(0)}
+[data-theme="light"] .toggle .knob{transform:translateX(26px)}
+
+/* Hero */
+.hero{position:relative;padding:60px 24px 32px;text-align:center;z-index:1}
+@media(min-width:768px){.hero{padding:80px 40px 40px}}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(2.4rem,7vw,5rem);font-weight:800;letter-spacing:-.04em;line-height:.95;margin-bottom:12px}
+.hero h1 .hl{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .sub{color:var(--text2);font-size:clamp(13px,2vw,16px);font-weight:300;letter-spacing:.15em;text-transform:uppercase;margin-bottom:36px}
+.stats{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.sp{display:flex;align-items:center;gap:8px;padding:10px 20px;background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-b);border-radius:100px;transition:all .3s}
+.sp:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px var(--accent-g)}
+.sp .n{font-family:'Fraunces',serif;font-weight:700;font-size:1.3rem;color:var(--accent)}
+.sp .l{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;font-weight:500}
+
+/* Controls */
+.ctrl{padding:0 16px;max-width:1440px;margin:0 auto;position:relative;z-index:1}
+@media(min-width:768px){.ctrl{padding:0 32px}}
+.sw{position:relative;margin-bottom:20px}
+.sw input{width:100%;padding:16px 20px 16px 54px;background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--glass-b);border-radius:18px;color:var(--text);font-size:15px;font-family:'Outfit',sans-serif;outline:none;transition:all .35s;box-shadow:var(--shadow)}
+.sw input:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-g),var(--shadow)}
+.sw input::placeholder{color:var(--text3)}
+.sw .ic{position:absolute;left:18px;top:50%;transform:translateY(-50%);color:var(--text3);transition:color .3s}
+.sw input:focus~.ic{color:var(--accent)}
+.sc{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--text3);font-weight:500;background:var(--badge);padding:4px 10px;border-radius:100px}
+
+.ts{overflow-x:auto;margin-bottom:16px;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch}
+.ts::-webkit-scrollbar{display:none}
+.tabs{display:flex;gap:8px;padding:2px;width:max-content;min-width:100%}
+.tab{flex-shrink:0;padding:10px 22px;border-radius:14px;border:1px solid var(--glass-b);background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;transition:all .3s;font-family:'Outfit',sans-serif;white-space:nowrap;position:relative;overflow:hidden}
+.tab::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--accent),var(--accent2));opacity:0;transition:opacity .3s}
+.tab:hover{border-color:rgba(232,185,49,.2);color:var(--text);transform:translateY(-1px)}
+.tab.a{border-color:var(--accent);color:var(--bg);font-weight:600}
+.tab.a::before{opacity:1}
+.tab em{position:relative;z-index:1;font-style:normal}
+.tab .c{margin-left:5px;opacity:.6;font-size:11px}
+.stabs{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap}
+.st{padding:7px 16px;border-radius:10px;border:1px solid transparent;background:var(--surface);color:var(--text3);font-size:12px;cursor:pointer;transition:all .25s;font-family:'Outfit',sans-serif;font-weight:500}
+.st:hover{color:var(--text2);background:var(--surface-h)}
+.st.a{background:var(--glass-s);color:var(--text);border-color:var(--glass-b);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+
+/* Grid */
+.grid{display:grid;grid-template-columns:1fr;gap:14px;padding:0 16px 80px;max-width:1440px;margin:0 auto;position:relative;z-index:1}
+@media(min-width:520px){.grid{grid-template-columns:repeat(2,1fr);gap:16px}}
+@media(min-width:768px){.grid{padding:0 32px 80px;gap:18px}}
+@media(min-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1400px){.grid{grid-template-columns:repeat(4,1fr)}}
+
+/* Card */
+.card{background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--glass-b);border-radius:22px;padding:22px;cursor:pointer;transition:all .4s var(--ease);position:relative;overflow:hidden}
+.card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cc,var(--accent)),transparent);opacity:0;transition:opacity .3s}
+.card:hover{transform:translateY(-6px);border-color:rgba(232,185,49,.15);box-shadow:var(--shadow-lg)}
+.card:hover::after{opacity:1}
+.card:active{transform:translateY(-2px) scale(.99)}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+.cn{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:600;line-height:1.3;flex:1}
+.td{flex-shrink:0;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 12px;border-radius:100px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.td.v{color:var(--veg);background:var(--veg-bg);border:1px solid rgba(134,239,172,.12)}
+.td.nv{color:var(--nonveg);background:var(--nonveg-bg);border:1px solid rgba(252,165,165,.12)}
+.cb{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.bg{font-size:11px;color:var(--text3);padding:3px 10px;background:var(--badge);border-radius:8px;font-weight:500}
+.bg.cc{color:var(--cc,var(--text2))}
+.cd{font-size:13px;color:var(--text2);line-height:1.7;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-weight:300}
+.cht{font-size:11px;color:var(--text3);margin-top:10px;opacity:0;transition:opacity .25s;display:flex;align-items:center;gap:4px}
+.card:hover .cht{opacity:1}
+
+/* Modal */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:1000;display:none;align-items:center;justify-content:center;padding:16px}
+.ov.open{display:flex}
+.modal{background:var(--modal-bg);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:1px solid var(--glass-b);border-radius:28px;max-width:620px;width:100%;max-height:85vh;overflow-y:auto;padding:32px;position:relative;animation:pop .4s cubic-bezier(.34,1.56,.64,1);box-shadow:var(--shadow-lg)}
+@media(min-width:768px){.modal{padding:40px}}
+@keyframes pop{from{opacity:0;transform:scale(.92) translateY(24px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.mx{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:12px;background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--glass-b);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;transition:all .2s}
+.mx:hover{background:var(--glass-s);color:var(--text);transform:rotate(90deg)}
+.modal h2{font-family:'Fraunces',serif;font-size:clamp(1.5rem,4vw,2rem);font-weight:700;margin-bottom:8px;padding-right:48px;line-height:1.2}
+.mt{display:flex;gap:8px;margin:14px 0 24px;flex-wrap:wrap}
+.mg{font-size:12px;padding:6px 16px;border-radius:100px;font-weight:500;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.sl{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--text3);font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.sl::after{content:'';flex:1;height:1px;background:var(--divider)}
+.step{display:flex;gap:14px;margin-bottom:14px;animation:si .3s ease both}
+.step:nth-child(1){animation-delay:.05s}.step:nth-child(2){animation-delay:.1s}.step:nth-child(3){animation-delay:.15s}.step:nth-child(4){animation-delay:.2s}.step:nth-child(5){animation-delay:.25s}.step:nth-child(6){animation-delay:.3s}
+@keyframes si{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+.sn{width:30px;height:30px;border-radius:10px;background:var(--glass-s);border:1px solid var(--glass-b);color:var(--text2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;margin-top:1px}
+.stx{flex:1;font-size:14px;color:var(--text2);line-height:1.75;font-weight:300}
+
+.empty{text-align:center;padding:80px 24px;grid-column:1/-1}
+.ei{width:80px;height:80px;margin:0 auto 20px;border-radius:24px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--glass-b);display:flex;align-items:center;justify-content:center;font-size:32px}
+.empty h3{font-family:'Fraunces',serif;font-size:1.3rem;margin-bottom:6px}
+.empty p{color:var(--text3);font-size:14px}
+
+.fu{opacity:0;transform:translateY(16px);animation:fup .5s var(--ease) forwards}
+@keyframes fup{to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:520px){.hero{padding:50px 16px 24px}.hero h1{font-size:2.2rem}.stats{gap:8px}.sp{padding:8px 14px}.sp .n{font-size:1.1rem}.modal{padding:24px;border-radius:22px}.toggle{top:14px;right:14px}}
+</style>
+</head>
+<body>
+<div class="toggle" onclick="toggleTheme()" aria-label="Toggle theme"><div class="knob"><span id="ti">🌙</span></div></div>
+
+<div class="hero">
+<h1>Gym <span class="hl">Recipe</span> Book</h1>
+<p class="sub">High Protein • Meal Prep • Healthy Living</p>
+<div class="stats">
+<div class="sp"><span class="n" id="s1">0</span><span class="l">Recipes</span></div>
+<div class="sp"><span class="n" id="s2">0</span><span class="l">Veg</span></div>
+<div class="sp"><span class="n" id="s3">0</span><span class="l">Non-Veg</span></div>
+<div class="sp"><span class="n">5</span><span class="l">Categories</span></div>
+</div></div>
+
+<div class="ctrl">
+<div class="sw">
+<input type="text" id="search" placeholder="Search by name, ingredient, or method...">
+<svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+<span class="sc" id="sc"></span>
+</div>
+<div class="ts"><div class="tabs" id="tabs"></div></div>
+<div class="stabs" id="stabs"></div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<div class="ov" id="ov" onclick="if(event.target===this)closeModal()">
+<div class="modal">
+<button class="mx" onclick="closeModal()">✕</button>
+<h2 id="mT"></h2>
+<div class="mt" id="mG"></div>
+<div class="sl">Step-by-step Instructions</div>
+<div id="mB"></div>
+</div></div>
+
+<script>
+const R={"Soya Recipes":[{"name":"Soya Potato Sandwich","category":"Sandwich","type":"Veg","instructions":"50gm soya granules + boil + wash + squeeze + 5gm oil + onion + tomato + chilli powder. 50gm soya chunks + haldi + coriander powder + garam masala + salt + chaat masala + cook 5 min + spread on bread"},{"name":"Soya Tikki","category":"Snack","type":"Veg","instructions":"50gm soya + 100gm boiled potato + onion + green chillies + salt + chaat masala + peri peri masala + make tikki. Chop 1 garlic + 2 tomato puree + salt + peri peri + oregano + cook 2-3 min (closed lid) + onion + chaat masala + 40gm oats + cook until thick"},{"name":"Soya Tikki (V2)","category":"Snack","type":"Veg","instructions":"100gm paneer + dahi + garlic 3-4 cloves + salt + black pepper + lemon + veggies. 50gm soya chunks + grind + 4 boiled potatoes + onion + coriander powder + salt => make tikki, add above dressing => airfry 180 deg for 20 min"},{"name":"Soya Bhaji","category":"Gravy","type":"Veg","instructions":"Garlic + onion + green chilli + tomato + red chilli + cashew + mix. Transfer to pan + red chilli + peri peri + kitchen king masala + water + soya chunks"},{"name":"Soya Bhurji","category":"Gravy","type":"Veg","instructions":"50gm soya granules + boil + wash + squeeze. 5ml oil + onion + tomato + chillies + fry 2-3 min. 1 tbspn besan + cook 2-3 min + haldi + coriander powder + garam masala + cook + dahi + chaat masala"},{"name":"Soya Tikka Masala","category":"Gravy","type":"Veg","instructions":"50gm soya + boil + squeeze + 100gm dahi + capsicum + onion + garlic (10 cloves) + kashmiri red chilli + salt + garam masala + coriander powder + 1 tbspn mustard oil + cook 5-10 min until thick"},{"name":"Soya Rice","category":"Rice","type":"Veg","instructions":"Oil + garlic + onion + capsicum + paneer + soya + chana + spices + 100gm rice"},{"name":"Chopper Rice (Soya)","category":"Rice","type":"Veg","instructions":"Veggies (carrot, onion, spring onion) + 40gm soya chunks + 50gm paneer + peri peri + coriander powder + haldi + salt + cook 4-5 min + rice + lemon + soya sauce + coriander"},{"name":"Veg Kebab (Soya)","category":"Snack","type":"Veg","instructions":"Soya chunks (50gm) + 100gm paneer + onion + tomato + garlic + besan + spices => make kebab => airfry 200 deg for 8 min"},{"name":"Burger Tikki (Soya)","category":"Snack","type":"Veg","instructions":"50gm soya granules + boil + mix + 100gm boiled potato + chaat masala + roasted jeera + red chillies + salt + lemon => make tikki"},{"name":"Burger Patties (Soya)","category":"Snack","type":"Veg","instructions":"50gm minced soya + 50gm paneer + boiled potato + salt + red chilli powder + jeera powder + garam masala + mix and make patties + airfry 180 deg for 10 min"},{"name":"Tikki (Soya Mix)","category":"Snack","type":"Veg","instructions":"Soaked soya chunks + mixer + carrot + beetroot + cabbage + potato + coriander powder / chaat masala + lal mirch + green chillies + red chilli powder + besan for binding"},{"name":"Soya Chilli","category":"Gravy","type":"Veg","instructions":"Water + onion + tomato + capsicum + haldi + lal mirch + coriander powder + chaat masala + soya chunks + dahi (water + 100gm) + tomato ketchup + lal mirch"},{"name":"No Base Sandwich (Soya)","category":"Sandwich","type":"Veg","instructions":"100gm soya + shred + onion + capsicum + vinegar + coriander + chillies + water + besan + salt + red chillies"}],"Paneer Recipes":[{"name":"Paneer Sandwich","category":"Sandwich","type":"Veg","instructions":"Dahi + capsicum + cucumber + 1 tbspn tomato + salt. Paneer + peri peri (season) + fry + cheese slice + above mixture + bread"},{"name":"Mixed Sandwich","category":"Sandwich","type":"Veg","instructions":"Sliced cucumber + 50gm boiled black chana + oil with onion + garlic. Take boiled chana + 50gm paneer + garlic + salt + chaat masala + lemon => blend => spread on sandwich"},{"name":"No Base Sandwich","category":"Sandwich","type":"Veg","instructions":"Veggies + 100gm paneer + dahi + besan + spices + water + spread in bread + airfry 7-8 min"},{"name":"Paneer Tikka Roll","category":"Wrap","type":"Veg","instructions":"100gm dahi + haldi + lal mirch + garam masala + chaat masala + salt + coriander powder + onion + capsicum + 100gm paneer + 1 tbspn mustard oil + cook until dry + roti + wrap"},{"name":"Paneer Wrap","category":"Wrap","type":"Veg","instructions":"Dahi + coriander + haldi + kashmiri lal mirch + mustard oil + capsicum + onion + tomato + chilli powder + lemon + 100gm paneer + cook 5-6 min + wrap around roti and saute"},{"name":"Paneer Veggies Wrap","category":"Wrap","type":"Veg","instructions":"Sprouts + spinach + ginger + garlic + chillies => blend + salt + garam masala + atta => make dosa. Paneer + onion + chaat masala => fill and wrap"},{"name":"Paneer Schezwan Wrap","category":"Wrap","type":"Veg","instructions":"100gm paneer + veggies + schezwan sauce + salt + peri peri + cook 2-3 min + cheese + roti"},{"name":"Paneer Taco","category":"Wrap","type":"Veg","instructions":"Capsicum + tomato + onion + oregano + chilli powder + 100gm paneer + salt. 1 roti + sauce + above stuffing"},{"name":"Burrito (Paneer)","category":"Wrap","type":"Veg","instructions":"50gm paneer + capsicum + onion + cheese + salt + garam masala + chaat masala + haldi + 50gm dahi + cook 4-5 min + wrap with roti"},{"name":"Paneer Quesadilla","category":"Wrap","type":"Veg","instructions":"100gm paneer + corn + veggies + salt + black pepper + pizza/pasta sauce + roti + cheese + cook 5-6 min"},{"name":"Paneer Fried Rice","category":"Rice","type":"Veg","instructions":"Dahi + garam masala + coriander + haldi + salt + oil + veggies + paneer + cook until dry + 200gm rice"},{"name":"Tawa Pulav (Paneer)","category":"Rice","type":"Veg","instructions":"1 tbspn oil + onion + veggies + spices + salt + ginger garlic paste + pav bhaji masala + 100gm paneer + 200gm rice"},{"name":"Mexican Rice","category":"Rice","type":"Veg","instructions":"1 tbspn oil + onion + capsicum + salt + tomato puree + spices + rajma + lemon + black pepper + 100gm paneer + rice => cook 5-7 min"},{"name":"Dahi Paneer Kebab","category":"Snack","type":"Veg","instructions":"Dahi + veggies + salt + ginger garlic paste + grated paneer + make small tikki + coat with oats"},{"name":"Palak Paneer Garlic Bread","category":"Snack","type":"Veg","instructions":"Boil palak + paneer + corn + green chillies + salt + butter + oregano/chilli flakes + grated garlic"},{"name":"Grilled Paneer","category":"Snack","type":"Veg","instructions":"Paneer + peri peri + oregano + chilli flakes + onion + capsicum + cucumber + chipotle sauce"},{"name":"Paneer Kebab / Tikki","category":"Snack","type":"Veg","instructions":"100gm grated paneer + coriander + green chillies + lemon + garam masala + chaat masala + oat flour + mix and make tikki"},{"name":"Paneer Tikka","category":"Snack","type":"Veg","instructions":"Capsicum + onion + tomato + 100gm paneer + dahi + coriander powder + red chillies + garam masala + salt + ginger garlic paste + besan + marinate => airfry 195 deg for 10 min"},{"name":"Paneer Burritos","category":"Snack","type":"Veg","instructions":"100gm paneer + spices + ginger garlic paste + lemon + mix. 1 tbspn oil + onion + capsicum + make roti wrap"},{"name":"Paneer Corn Chilli","category":"Snack","type":"Veg","instructions":"Oil + garlic + 2 capsicum + veggies + onion + paneer + salt + basic spices + 100gm paneer"},{"name":"Paneer Chilli","category":"Snack","type":"Veg","instructions":"5gm oil + chopped onion + capsicum + 100gm paneer + soya sauce + schezwan sauce + red chilli sauce + water"},{"name":"Pyaaz Wala Paneer","category":"Gravy","type":"Veg","instructions":"Onion + water + jeera => saute. Capsicum + tomato + water + tikka masala + haldi + coriander powder + mirch powder + degi mirch powder"},{"name":"Cheese Paneer Ghotala","category":"Gravy","type":"Veg","instructions":"Chop onion + tomato + capsicum + garlic + ginger + coriander => khada masala + salt + chaat masala + red chilli powder + coriander powder + haldi + dahi. Pan: butter + batter + fry + paneer + milk + cheese"},{"name":"Paneer Bhurji","category":"Gravy","type":"Veg","instructions":"250gm dahi + 3 tbspn besan + red chillies + coriander powder + water mix. 1 tbspn oil + jeera + 2 onion + salt + 2 tomato + mix above + cook 7-8 min + add 100gm paneer"},{"name":"Paneer Sauce","category":"Sauce","type":"Veg","instructions":"2 onion + 2 tomato => airfry 180 deg for 15 min => blend + salt + 100gm paneer + red chilli powder + onion powder + garlic + water + blend"},{"name":"High Protein Paratha","category":"Snack","type":"Veg","instructions":"Veggies + chilli + 100gm paneer + spices + besan (for binding) + water + mix"},{"name":"Cheesy Kebabs","category":"Snack","type":"Veg","instructions":"100gm potato + 100gm paneer + spices + salt + onion/garlic + mix + breadcrumb + airfry 12 min at 185 deg"},{"name":"High Protein Tikki","category":"Snack","type":"Veg","instructions":"100gm soaked chickpeas + grind + ginger garlic paste + red chilli + coriander powder + chopped onions + 100gm paneer + 2 spoon besan + airfry 180 deg for 20 min"},{"name":"High Protein Salad","category":"Salad","type":"Veg","instructions":"50gm paneer + salt + coriander powder + cook 2 min + mix with onion + cucumber + tomato + 50gm sprouts + lemon + salt"},{"name":"Pasta (Paneer)","category":"Snack","type":"Veg","instructions":"Boil pasta + oil + tomato + garlic + cook and grind. 100gm paneer into grind + cook paste + add veggies + salt + pasta"}],"Chicken Recipes":[{"name":"Chicken Sandwich","category":"Sandwich","type":"Non-Veg","instructions":"Coriander powder + garam masala + garlic powder + chaat masala + salt => mix and marinate chicken + cook without covering lid"},{"name":"Lemon Chicken Roll","category":"Wrap","type":"Non-Veg","instructions":"Wrap: 50gm flour + 1 egg + chopped coriander + chaat masala. Sauce: dahi + garlic + lemon + salt + pepper. Chicken: 100gm + onion + garlic + spring onion + soya sauce + lemon + dahi + salt + pepper + garam masala + cook 10-15 min"},{"name":"Healthy Shawarma","category":"Wrap","type":"Non-Veg","instructions":"100gm chicken + salt + garam masala + haldi + coriander powder + ginger-garlic => marinate and cook 12-13 min. Wrap around roti + onion + cucumber"},{"name":"Chicken Wrap","category":"Wrap","type":"Non-Veg","instructions":"100gm chicken + carrot + cucumber + onion + red chilli powder + salt + garlic powder => airfry 190 deg for 15 min. Roti => wrap around one egg + above mix"},{"name":"Chicken Keema Wrap","category":"Wrap","type":"Non-Veg","instructions":"100gm chicken + tomato + onion + salt + ginger/garlic powder + red chillies + coriander powder + two eggs + wrap around roti + cheese"},{"name":"Garlic Chicken Roll","category":"Wrap","type":"Non-Veg","instructions":"650gm chicken + garlic powder + onion powder + 1 tsp salt + pepper. Cheese + Greek yogurt + garlic paste + lemon/honey => mix and spread over roti"},{"name":"Chicken Tacos","category":"Wrap","type":"Non-Veg","instructions":"Chutney: coriander + ginger garlic paste + green chillies + lemon + dahi + salt. 300gm chicken + deep cuts + ginger garlic paste + red chilli powder + salt + chilli flakes + soya sauce + mustard oil + marinate 15-20 min + airfry"},{"name":"Chicken Rice","category":"Rice","type":"Non-Veg","instructions":"Chicken + haldi + chicken masala + salt + coriander powder + cook. Onion + tomato + 100gm soaked rice + water + boil + add chicken"},{"name":"Chicken Tawa Pulav","category":"Rice","type":"Non-Veg","instructions":"1 tbspn oil + garlic + onion + green chillies + capsicum + tomato + spices + pav bhaji masala + 100gm chicken => mix and cook with 200gm white rice"},{"name":"High Protein Chicken Rice","category":"Rice","type":"Non-Veg","instructions":"5gm oil + garlic/onion + saute + 300gm chicken + veggies + salt + pepper + soya + schezwan + cooked rice"},{"name":"Chicken Biryani","category":"Rice","type":"Non-Veg","instructions":"Chicken + ginger garlic paste + dahi + salt + spices. 1 tbspn oil + chopped onion + tezpatta + tomato + marinated chicken + spices + coriander"},{"name":"Garlic Chicken Rice","category":"Rice","type":"Non-Veg","instructions":"200gm chicken + ginger garlic paste + red chillies + spices + salt + cook. Same pan + coriander powder + 200gm cooked rice + mix"},{"name":"Chicken Barra","category":"Snack","type":"Non-Veg","instructions":"Chicken + salt + lime, rest aside. Mixer: garlic + ginger + green chilli + dahi + coriander. Mix batter with chicken + coriander powder + garam masala + oil + airfry"},{"name":"Tandoori Chicken","category":"Snack","type":"Non-Veg","instructions":"Ginger garlic paste + dahi + red chilli powder + coriander powder + lime + salt + kasuri methi + garam masala + 1 tbspn oil + cook"},{"name":"Pesto Chicken","category":"Snack","type":"Non-Veg","instructions":"Basil leaves + garlic + cashew + salt + pepper + oregano + lime + oil"},{"name":"Honey/Garlic Chicken","category":"Snack","type":"Non-Veg","instructions":"Coat chicken with flour + red chilli powder + salt + onion powder + garlic powder + whipped egg + cornflakes/oats + airfry 15-18 min at 180 deg. Sauce: honey + soya sauce + garlic + vinegar + cornflour"},{"name":"Juicy Chicken","category":"Snack","type":"Non-Veg","instructions":"250gm chicken + deep cuts + 3 tbspn dahi + masalas + salt + marinate => airfry 190 deg for 12 min"},{"name":"Subway Wrap","category":"Snack","type":"Non-Veg","instructions":"Chicken breast + cut in half + salt + black pepper + airfry 190 deg for 12 min => fork => shred"},{"name":"High Protein Bowl","category":"Snack","type":"Non-Veg","instructions":"100gm chicken + veggies + onion/garlic powder + 1 tbspn oil + airfry 190 deg for 15 min"},{"name":"Cheesy Chicken Bites","category":"Snack","type":"Non-Veg","instructions":"100gm boiled potato + 100gm boiled chicken + onion + coriander + 50gm cheese + spices + breadcrumb => airfry 10 min at 185 deg"},{"name":"Lazy Fried Chicken","category":"Snack","type":"Non-Veg","instructions":"100gm chicken + 1 egg + spices + breadcrumb + airfry 190 deg for 15 min"},{"name":"Chicken Hariyali Tikka","category":"Snack","type":"Non-Veg","instructions":"Coriander + mint + garlic + ginger + chillies => mix. Chicken + capsicum + onion + dahi + besan + salt + airfry 15 min at 190 deg"},{"name":"Chicken Meatballs","category":"Snack","type":"Non-Veg","instructions":"Minced chicken + spices + salt => balls + 1 egg => airfry 190 deg for 10 min. Sauce: garlic + onion + tomato + spices + tomato puree => serve with rice"},{"name":"Chicken Fries","category":"Snack","type":"Non-Veg","instructions":"100gm minced chicken + salt + black pepper + onion/garlic powder => shape into fries => freeze 1 hour. Rice flour + oregano/chilli flakes + black pepper => coat + airfry 12 min at 180 deg"},{"name":"Chicken / Crispy Potatoes","category":"Snack","type":"Non-Veg","instructions":"Garlic + chicken + spices + tomato puree + onion + 100gm potatoes + salt + oil + airfry 180 deg for 15 min"},{"name":"Chicken Chilli","category":"Snack","type":"Non-Veg","instructions":"1 tbspn oil + garlic + 1 onion + 1/2 capsicum + vinegar + chilli sauce + soya sauce + kashmiri lal mirch. Chicken + 1 egg + oat flour + salt + airfry 190 deg for 15 min"},{"name":"Chicken Nuggets","category":"Snack","type":"Non-Veg","instructions":"Minced chicken + egg + cheese + garlic/onion powder + salt + red chillies + black pepper + breadcrumb + airfry 200 deg for 10 min"},{"name":"Chicken Burritos","category":"Snack","type":"Non-Veg","instructions":"100gm chicken + black pepper + spices + salt + dahi + garlic/onion + red chilli powder + coriander powder + cook + wrap around roti"},{"name":"Chicken Kebab","category":"Snack","type":"Non-Veg","instructions":"200gm chicken + 1 boiled potato + coriander powder + ginger garlic paste + haldi + salt. Airfry 180 deg for 20 min"},{"name":"Chinese Chicken","category":"Gravy","type":"Non-Veg","instructions":"Chicken + green chilli sauce + soya sauce + vinegar + ginger garlic paste + salt + rice flour + garlic powder + onion powder + marinate + airfry 195 deg for 15 min"},{"name":"Lazy Chicken","category":"Gravy","type":"Non-Veg","instructions":"250gm dahi + veggies (onion, capsicum) + spices + marinate + 1 tbspn oil + cook 15-20 min"},{"name":"Butter Chicken","category":"Gravy","type":"Non-Veg","instructions":"Oil + khada masala + garlic + onion + 2 tomato + soaked cashew + chilli + spices => blend. Chicken + spices + dahi => airfry 200 deg for 12 min + mix + cook 3-5 min"},{"name":"Chicken Masala","category":"Gravy","type":"Non-Veg","instructions":"Chicken + spices + dahi + marinate => cook"},{"name":"Chicken Gravy","category":"Gravy","type":"Non-Veg","instructions":"200gm chicken + dahi + ginger garlic paste + haldi + lal mirch + chicken masala powder + mustard oil + lemon. 2 onion + 2 tomato + cook and grind + add chicken"},{"name":"Chicken Pizza","category":"Pizza","type":"Non-Veg","instructions":"Base: boneless chicken + grind + salt + black pepper + onion/garlic powder + 1 egg => airfry 180 deg for 12 min. Pizza sauce + cheese + toppings + airfry 180 deg for 8 min"},{"name":"Mr. B Fit Chicken","category":"Snack","type":"Non-Veg","instructions":"100gm chicken + carrot + capsicum + onion + red chilli powder + salt + onion/garlic powder + black pepper + lemon juice => airfry 195 deg for 25 min"},{"name":"Pasta Salad (Chicken)","category":"Salad","type":"Non-Veg","instructions":"Veggies chopped + dahi + spices + red chillies. Chicken + garlic + oregano => airfry => mix both"}],"Egg Recipes":[{"name":"Egg Fried Rice","category":"Rice","type":"Non-Veg","instructions":"1 tbspn oil + 2 eggs + rice + chilli sauce + salt + garlic + capsicum + onion + 100gm paneer + schezwan sauce"},{"name":"Egg Salad","category":"Salad","type":"Non-Veg","instructions":"3 boiled eggs + egg white chop + cucumber + onion + tomato + boiled potato. Egg yolk + dahi + peri peri + chaat masala + salt => mix"},{"name":"Egg Salad (V2)","category":"Salad","type":"Non-Veg","instructions":"4 boiled eggs + separate yolk + chaat masala + onion powder => spread. Egg whites + cucumber + carrot + onion + chilli + lemon => mix both"},{"name":"Egg Cube Salad","category":"Salad","type":"Non-Veg","instructions":"Cabbage + capsicum + carrot + tomato puree + salt + coriander + chaat masala + red chilli powder + haldi + paneer"},{"name":"Shakshuka","category":"Gravy","type":"Non-Veg","instructions":"1 spoon oil + minced garlic + chopped onion + bell pepper + ketchup + cook 2-3 min. Tomato + red chilli powder + paprika + oregano + salt + chilli flakes + jeera powder + water => cook. Create holes + eggs + cheese + coriander"},{"name":"Shakshuka (V2)","category":"Gravy","type":"Non-Veg","instructions":"1 tbspn oil + garlic + onion + 2 tomato + capsicum + salt + chilli flakes + tomato puree => cook 10-12 min => make hole + add 3 eggs + salt"},{"name":"Boiled Egg Bhurji","category":"Gravy","type":"Non-Veg","instructions":"1 tbspn oil + jeera + 2 onion + capsicum + green chillies + spices + tomato puree + cook 8-10 min + cheese slices + 4 boiled eggs => grate and mix + coriander"},{"name":"Airfry Egg","category":"Snack","type":"Non-Veg","instructions":"Veggies + salt + red + black pepper + 2 eggs + airfry 170 deg for 15 min"},{"name":"Egg Snack Mix","category":"Snack","type":"Non-Veg","instructions":"3 white eggs + veggies + oregano/chilli flakes + peri peri + salt + mozzarella cheese"},{"name":"Protein Sauce","category":"Sauce","type":"Non-Veg","instructions":"3 boiled eggs + 2 spoon ghee + kashmiri red chillies + garlic + salt + vinegar + blend"},{"name":"Spicy Sauce / Spread","category":"Sauce","type":"Non-Veg","instructions":"3 boiled eggs + garlic + chilli + salt + peri peri powder + vinegar + dahi + blend. 100gm dahi + roasted garlic + cashew + oregano + peri peri + salt"},{"name":"Roti Egg Wrap","category":"Wrap","type":"Non-Veg","instructions":"Leftover roti + 3 whole eggs + chaat masala + garam masala + salt + maggi masala (optional) + veggies + cheese"}],"Pizza & Other":[{"name":"Pizza (Rice Base)","category":"Pizza","type":"Non-Veg","instructions":"Base: 100gm rice + 1 egg + ginger garlic paste + water + mixer. Toppings: chicken breast + pizza sauce + ketchup + cheese"},{"name":"Pizza (Rice Paper)","category":"Pizza","type":"Veg","instructions":"Base: rice paper. Toppings: pizza sauce + cheese + grated paneer + dahi + veggies"},{"name":"Pizza (Moong Dal)","category":"Pizza","type":"Veg","instructions":"Base: moong dal + water => paste + salt + jeera powder + red chilli + green chillies. Toppings: onion + tomato puree + oregano + chilli flakes + paneer"},{"name":"Pizza (Suji Base)","category":"Pizza","type":"Veg","instructions":"Base: 50gm suji + 25gm dahi + baking powder + salt. Toppings: pizza sauce + paneer + onion + cheese + oregano + peri peri"},{"name":"Pizza (Roti Base)","category":"Pizza","type":"Veg","instructions":"Onion + capsicum + tomato + 100gm paneer + roti + pizza sauce + cheese + mixed herbs"},{"name":"Pizza (Bread Base)","category":"Pizza","type":"Veg","instructions":"Sauce: 2 tbspn oil + garlic + onion + tomato puree + salt + oregano. Bread + sauce + paneer + capsicum + cheese => airfry 5 min at 190 deg"},{"name":"Pizza (Moong Batter)","category":"Pizza","type":"Veg","instructions":"100gm soaked moong dal => grind + suji + baking soda + salt + oil => batter + sauce + veggies + paneer + cheese"},{"name":"Protein Brownie","category":"Dessert","type":"Veg","instructions":"Banana + peanut butter + whey protein + cocoa powder + baking soda + milk => airfry 180 deg for 10-12 min"},{"name":"Pizza/Pasta Sauce","category":"Sauce","type":"Veg","instructions":"1 tbspn oil + 2 tbspn garlic + 1 onion + tomato (1/2 kg) + oregano/chilli flakes + salt + cook 15 min => grind"},{"name":"Pasta Sauce","category":"Sauce","type":"Veg","instructions":"1 onion + capsicum + garlic + tomato => airfry 10 min + 100gm paneer => mix and cook"},{"name":"Spicy Garlic Sauce","category":"Sauce","type":"Veg","instructions":"Dahi + minced garlic + hot sauce + lime + coriander + paprika + salt + onion powder + oregano + pepper + chilli flakes"},{"name":"Marination Base","category":"Basic","type":"Veg","instructions":"Dahi + haldi + coriander powder + garam masala + chaat masala + ginger garlic paste"},{"name":"Veg Sandwich","category":"Sandwich","type":"Veg","instructions":"Tomato + capsicum + onion + coriander powder + chaat masala + garam masala + cook and spread on bread"},{"name":"No Bread Sandwich","category":"Sandwich","type":"Veg","instructions":"1 cup moong dal + garlic + ginger + salt + water + grind. 100gm paneer + veggies + mix and make sandwich"},{"name":"Roti Wrap (Veg)","category":"Wrap","type":"Veg","instructions":"Dahi + coriander powder + chaat masala + lal mirchi + salt + besan. Mix boiled soybean + ginger + onion + garlic + paneer + capsicum"},{"name":"Patties (Chickpea)","category":"Snack","type":"Veg","instructions":"100gm kabuli chana boiled + garam masala + red chillies + salt + cook 5-10 min + 50gm paneer + chopped onion => make tikki"},{"name":"Veg/Pea Kebab","category":"Snack","type":"Veg","instructions":"Overnight soaked chana + garlic + chillies + lots of coriander + besan + salt => blend => airfry 180 deg for 12 min"},{"name":"Chopper Rice (Garlic)","category":"Rice","type":"Veg","instructions":"1 tbspn garlic + onion => brown => chilli + oregano + peri peri + salt + rice => mix"},{"name":"Tawa Pulav (Soya)","category":"Rice","type":"Veg","instructions":"Oil + jeera + garlic/onion + capsicum + saute + tomato + salt + spices + 50gm soya chunks + biryani masala + cooked rice"},{"name":"Lemon Pepper Chicken","category":"Snack","type":"Non-Veg","instructions":"Dahi + garlic + lime + palak + salt + pepper"},{"name":"Veg Salad Dressing","category":"Salad","type":"Veg","instructions":"Dahi + lemon + coriander + salt + pepper + garlic + chopped cucumber"}]};
+
+const CC={'Soya Recipes':['var(--soya)','rgba(94,234,212,0.1)','rgba(94,234,212,0.2)'],'Paneer Recipes':['var(--paneer)','rgba(253,186,116,0.1)','rgba(253,186,116,0.2)'],'Chicken Recipes':['var(--chicken)','rgba(252,165,165,0.1)','rgba(252,165,165,0.2)'],'Egg Recipes':['var(--egg)','rgba(253,230,138,0.1)','rgba(253,230,138,0.2)'],'Pizza & Other':['var(--pizza)','rgba(196,181,253,0.1)','rgba(196,181,253,0.2)']};
+const all=[];Object.entries(R).forEach(([c,l])=>l.forEach(r=>all.push({...r,mainCat:c})));
+let aT='All',aS='All',q='';
+document.getElementById('s1').textContent=all.length;
+document.getElementById('s2').textContent=all.filter(r=>r.type==='Veg').length;
+document.getElementById('s3').textContent=all.filter(r=>r.type!=='Veg').length;
+
+function fil(){let f=all;if(aT!=='All')f=f.filter(r=>r.mainCat===aT);if(aS!=='All')f=f.filter(r=>r.category===aS);if(q){const s=q.toLowerCase();f=f.filter(r=>(r.name+r.instructions+r.category+r.type+r.mainCat).toLowerCase().includes(s))}return f}
+
+function rT(){const e=document.getElementById('tabs');e.innerHTML=['All',...Object.keys(R)].map(c=>{const n=c==='All'?all.length:R[c].length;return`<button class="tab${aT===c?' a':''}" onclick="sT('${c}')"><em>${c==='All'?'All Recipes':c}<span class="c">${n}</span></em></button>`}).join('')}
+
+function rS(){const e=document.getElementById('stabs'),f=aT==='All'?all:all.filter(r=>r.mainCat===aT),cs=[...new Set(f.map(r=>r.category))].sort();if(cs.length<=1){e.innerHTML='';return}e.innerHTML=['All',...cs].map(c=>`<button class="st${aS===c?' a':''}" onclick="sS('${c}')">${c}</button>`).join('')}
+
+function rG(){const g=document.getElementById('grid'),f=fil();document.getElementById('sc').textContent=q?f.length+' found':f.length+' recipes';
+if(!f.length){g.innerHTML='<div class="empty"><div class="ei">🍽️</div><h3>No recipes found</h3><p>Try a different search or category</p></div>';return}
+g.innerHTML=f.map((r,i)=>{const c=CC[r.mainCat]||CC['Pizza & Other'];return`<div class="card fu" style="--cc:${c[0]};animation-delay:${Math.min(i*.03,.6)}s" onclick='oM(${JSON.stringify(r).replace(/'/g,"&#39;")})'>
+<div class="ch"><div class="cn">${r.name}</div><span class="td ${r.type==='Veg'?'v':'nv'}">${r.type==='Veg'?'● Veg':'● Non-Veg'}</span></div>
+<div class="cb"><span class="bg cc" style="color:${c[0]}">${r.mainCat}</span><span class="bg">${r.category}</span></div>
+<div class="cd">${r.instructions}</div>
+<div class="cht"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>View full recipe</div></div>`}).join('')}
+
+function sT(t){aT=t;aS='All';rT();rS();rG()}
+function sS(s){aS=s;rS();rG()}
+document.getElementById('search').addEventListener('input',e=>{q=e.target.value;rG()});
+
+function oM(r){const o=document.getElementById('ov');document.getElementById('mT').textContent=r.name;const c=CC[r.mainCat]||CC['Pizza & Other'];
+document.getElementById('mG').innerHTML=`<span class="mg" style="background:${c[1]};color:${c[0]};border:1px solid ${c[2]}">${r.mainCat}</span><span class="mg" style="background:var(--badge);color:var(--text2)">${r.category}</span><span class="mg" style="background:${r.type==='Veg'?'var(--veg-bg)':'var(--nonveg-bg)'};color:${r.type==='Veg'?'var(--veg)':'var(--nonveg)'}">${r.type==='Veg'?'● Vegetarian':'● Non-Veg'}</span>`;
+const st=r.instructions.split(/\.\s+|=>\s*/).filter(s=>s.trim());
+document.getElementById('mB').innerHTML=st.map((s,i)=>`<div class="step"><div class="sn">${i+1}</div><div class="stx">${s.trim()}</div></div>`).join('');
+o.classList.add('open');document.body.style.overflow='hidden'}
+
+function closeModal(){document.getElementById('ov').classList.remove('open');document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+function toggleTheme(){const h=document.documentElement,n=h.dataset.theme==='dark'?'light':'dark';h.dataset.theme=n;document.getElementById('ti').textContent=n==='dark'?'🌙':'☀️';try{localStorage.setItem('theme',n)}catch(e){}}
+try{const s=localStorage.getItem('theme');if(s){document.documentElement.dataset.theme=s;document.getElementById('ti').textContent=s==='dark'?'🌙':'☀️'}}catch(e){}
+
+rT();rS();rG();
+</script>
+</body>
+</html>
